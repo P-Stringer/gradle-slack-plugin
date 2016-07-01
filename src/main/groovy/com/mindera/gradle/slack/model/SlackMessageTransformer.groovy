@@ -22,11 +22,15 @@ class SlackMessageTransformer {
     private static final String AUTHOR_TITLE = 'Git Author'
     private static final String COMMIT_TITLE = 'Git Commit'
 
-    static SlackMessage buildSlackMessage(String title, Task task, TaskState state, String taskLog) {
+    static SlackMessage buildSlackMessage(String title, Task task, TaskState state, String channel, String taskLog) {
         Throwable failure = state.getFailure()
         boolean success = failure == null
 
         SlackMessage slackMessage = new SlackMessage(title ? title : TITLE_DEFAULT)
+
+        if(channel != null && !channel.isEmpty()){
+            slackMessage.setChannel(channel);
+        }
 
         SlackAttachment attachments = new SlackAttachment()
         attachments.setColor(success ? COLOR_PASSED : COLOR_FAILED)
